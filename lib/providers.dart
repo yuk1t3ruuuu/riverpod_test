@@ -1,20 +1,24 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:budou/model.dart';
 
 List<ToDo> todolist = [
-  ToDo(id: 0, description: 'タスク1', isCompleted: false, key: '1'),
-  ToDo(id: 1, description: 'タスク2', isCompleted: false, key: '2'),
-  ToDo(id: 2, description: 'タスク3', isCompleted: false, key: '3'),
-  ToDo(id: 3, description: 'タスク4', isCompleted: false, key: '4')
+  ToDo(id: 0, description: 'タスク1', isCompleted: true, key: '1'),
+  ToDo(id: 1, description: 'タスク2', isCompleted: true, key: '2'),
+  ToDo(id: 2, description: 'タスク3', isCompleted: true, key: '3'),
+  ToDo(id: 3, description: 'タスク4', isCompleted: true, key: '4')
 ];
 
 class TodoNotifier extends StateNotifier<List<ToDo>> {
   TodoNotifier() : super(todolist);
 
-  void addTodo(ToDo todo) {
-    state = [...state, todo];
+  void addTopTodo(ToDo todo) {
+    state = [todo, ...state];
   }
+
+  void addBottomTodo(ToDo todo) {
+    state = [...state, todo ];
+  }
+
 
   void removeTodo(int id) {
     state = [
@@ -44,12 +48,24 @@ class TodoNotifier extends StateNotifier<List<ToDo>> {
     state = index;
   }
 
+  void editDescription(int id, String description){
+    state = [
+      for (final todo in state)
+        if (todo.id == id)
+          todo.copyWith(description: description)
+        else
+          todo
+    ];
+  }
+
 
 }
 
   final todosProvider = StateNotifierProvider<TodoNotifier, List<ToDo>>((ref) {
     return TodoNotifier();
   });
+
+  final editProvider = StateProvider((ref) => true);
 
 
 

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:budou/providers.dart';
-import 'package:budou/model.dart';
-import 'package:budou/add_footer.dart';
-import 'package:budou/add_header.dart';
+import 'package:budou/mainview.dart';
+import 'package:budou/editview.dart';
 
 
 
@@ -21,10 +20,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      debugShowCheckedModeBanner: false,
       home: const ToDoPage(),
     );
   }
 }
+
+
 
 class ToDoPage extends ConsumerWidget{
   const ToDoPage({Key? key}) : super(key: key);
@@ -32,37 +34,9 @@ class ToDoPage extends ConsumerWidget{
   @override
   Widget build(BuildContext context, WidgetRef ref){
 
-    final List<ToDo> todolist = ref.watch(todosProvider);
+    final edit = ref.watch(editProvider.state);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('ToDoリスト'),
-        backgroundColor: Colors.green,
-      ),
-      body: Container(
-        child: ReorderableListView(
-            onReorder: ( oldIndex,  newIndex){
-              ref.read(todosProvider.notifier).drag(oldIndex, newIndex);
-            },
-            children: todolist.map((todo) =>
-              InkWell(
-                onTap: () => ref.read(todosProvider.notifier).toggle(todo.id),
-                child: Card(
-                    key: Key(todo.key),
-                    child: ListTile(
-                      title:todo.isCompleted?Text('${todo.description}'):Text('${todo.description}', style: TextStyle(decoration: TextDecoration.lineThrough)),
-                    )
-                )
-              )
-            ).toList()
-        ),
-      ),
-    );
+    return edit.state?BaseView():EditView();
   }
-
-
-
-
-
 }
 

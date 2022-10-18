@@ -17,7 +17,7 @@ class AddFooter extends ConsumerWidget{
       context: context,
       builder: (BuildContext context) {
       String description = '';
-      bool isCompleted = false;
+      bool isCompleted = true;
       return Consumer(
          builder: (context, ref, _){
          return AlertDialog(
@@ -43,7 +43,7 @@ class AddFooter extends ConsumerWidget{
               ),
               TextButton(
                 onPressed: (){
-                  ref.read(todosProvider.notifier).addTodo(
+                  ref.read(todosProvider.notifier).addBottomTodo(
                   ToDo(id: todolist.length + 1, description: description, isCompleted: isCompleted, key: (todolist.length + 1).toString())
                   );
                   Navigator.pop(context, 'OK');
