@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:budou/providers.dart';
 import 'package:budou/model.dart';
-
+import 'package:budou/add_footer.dart';
+import 'package:budou/add_header.dart';
 
 
 
@@ -44,12 +45,16 @@ class ToDoPage extends ConsumerWidget{
               ref.read(todosProvider.notifier).drag(oldIndex, newIndex);
             },
             children: todolist.map((todo) =>
-                Card(
+              InkWell(
+                onTap: () => ref.read(todosProvider.notifier).toggle(todo.id),
+                child: Card(
                     key: Key(todo.key),
                     child: ListTile(
-                      title: Text('${todo.description}'),
+                      title:todo.isCompleted?Text('${todo.description}'):Text('${todo.description}', style: TextStyle(decoration: TextDecoration.lineThrough)),
                     )
-                )).toList()
+                )
+              )
+            ).toList()
         ),
       ),
     );
