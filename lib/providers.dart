@@ -34,12 +34,13 @@ class TodoNotifier extends StateNotifier<List<ToDo>> {
   }
 
   void drag (int oldIndex, int newIndex){
-
+     List<ToDo> index = [];
       if (oldIndex < newIndex){
         newIndex -= 1;
       }
-      ToDo num = todolist.removeAt(oldIndex);
-      todolist.insert(newIndex, num);
+       ToDo num = index.removeAt(oldIndex);
+       index.insert(newIndex, num);
+       state = index;
   }
 
 
